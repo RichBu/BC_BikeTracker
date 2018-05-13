@@ -1,7 +1,9 @@
-var numToBurn = $('#numToBurn');
-var address = $('#address');
-var howManyToTransfer = $('#howManyToTransfer');
-var addressToTransfer = $('#addressToTransfer');
+
+var globalNumBikes;
+
+var bike_owner = [];
+var bike_mfg = [];
+var bike_sn = [];
 
 
 
@@ -113,43 +115,32 @@ App = {
         });
   },
   grabState: function(event){
-    //old routine leave it here for reference
+    //pets all of the current bikes
     event.preventDefault(); 
 
     var TokenInstance;
-
     App.contracts.Token.deployed().then(function(instance) {
-      TokenInstance = instance;
+          TokenInstance = instance;
+          var promises = [];
+          promises.push(TokenInstance.getBikesCount.call() );
+          return Promise.all(promises);
+        }).then(function(result) {
+          //pull out who the owner of the bike shop is
+          console.log(result[0]);
+          //this won't work past int limit
+          globalNumBikes = parseInt(result[0]);
+        }).then( function(res){
+          //grab all of the bike records
+          var promises = [];
 
-      return Promise.all([
+          for (var i = 0; i < globalNumBikes; i++) {
+              promises.push(TokenInstance.getBike_rec(i).call());
+          }
+          return Promise.all(promises);
+        }).then ( function(result) {
+          //all the bikes are in
 
-        TokenInstance.name.call(),
-
-        TokenInstance.symbol.call(),
-
-        TokenInstance.LIMIT.call(), 
-
-        TokenInstance.owner.call(), 
-
-        ]);
-
-    }).then(function(result) {
-      
-      var name = result[0];
-      var symbol = result[1];
-      var limit = result[2];
-      var owner = result[3];
-
-      var pName = $('<p>').text(`name:  ${name}`);
-      var pSymbol = $('<p>').text(`symbol:  ${symbol}`);
-      var pLimit = $('<p>').text(`limit:  ${limit}`);
-      var pOwner = $('<p>').text(`owner:  ${owner}`);
-
-      $('#displayInfo').append(pName, pSymbol, pLimit, pOwner);
-
-    }).catch(function(err) {
-      $('#displayInfo').text(err.message);
-    });
+        });
   },
   getBalance: function(event){
     event.preventDefault();
@@ -169,27 +160,6 @@ App = {
 
     }).catch(function(err) {
       $('#displayBalance').text(err.message);
-    });
-  },
-  burnTokens: function(event){
-    event.preventDefault();
-
-    var num = parseInt(numToBurn.val());
-
-    var TokenInstance;
-
-    App.contracts.Token.deployed().then(function(instance) {
-      TokenInstance = instance;
-
-      return TokenInstance.burn(num);
-
-    }).then(function(result) {
-      
-      addTransactionToDOM(result, $('#transactions'));
-      $('#displayBurnResults').text('tokens were burned');
-
-    }).catch(function(err) {
-      $('#displayBurnResults').text(err.message);
     });
   },
   transferBike: function(event){
