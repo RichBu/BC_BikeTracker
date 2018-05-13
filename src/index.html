@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>My Decentralized Address Book</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" type="text/css" href="css/utility.css">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+
+    <div class="container">
+        <h1>Bike Tracking by Rich Budek</h1>
+        <br>
+        <div id='general_info' >
+        </div>
+
+        <div class="row bottom-margin-50">
+            <div class="col-md-12" id="div-info">
+
+            </div>
+        </div>
+
+        <!-- https://getbootstrap.com/docs/4.1/layout/grid/ -->
+        <button id="grabState">Read all bikes in inventory</button>
+        <button id="grabOwner">Get Store Owner</button>
+
+        <div class="row bottom-margin-50">
+            <div class="col-md-12" id="transactions">
+
+            </div>
+        </div>
+        
+        <h2 class="bottom-margin-50">Add a new bike to blockchain</h2> 
+        <div class=col-md-12" id="new-bike">
+            <form>
+                <label for="owner" class="control-label">Owner Address</label>
+                <input class="width-225" id="owner" type="text">
+                <br>
+
+                <label for="manufacturer" class="control-label">Manufacturer</label>
+                <input id="manufacturer" type="text">
+                <br>
+
+                <label for="serial_num" class="control-label">Serial Number</label>
+                <input id="serial_num" type="text">
+            </form>
+        </div>
+
+        <h2 class="bottom-margin-50">Change Ownership</h2> 
+
+        <div class="row bottom-margin-50" id="ownership">
+            <div class="col-md-4">
+                <input class="width-225" type="text" id="addressToTransfer" placeholder="put address in to transfer tokens to">
+                <button id="transferBike">Transfer Bike</button>   
+            </div>
+        </div>
+
+        <div class="row bottom-margin-50" id="div-trans-log">
+            <div class="col-md-4">
+                <input class="width-225" type="text" id="addressToTransfer" placeholder="put address in to transfer tokens to">
+                <button id="transferBike">Transfer Bike</button>   
+            </div>
+        </div>
+
+
+    </div>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/web3.min.js"></script>
+    <script src="js/truffle-contract.js"></script>
+    <script src="js/app.js"></script>
+  </body>
+</html>
