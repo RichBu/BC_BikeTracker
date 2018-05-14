@@ -1,6 +1,6 @@
 pragma solidity ^0.4.18;
 
-contract Token {
+contract Bikes {
     string public name = 'Bicyle List';    
     address public storeOwner;
     uint256 nextRecNum;
@@ -28,8 +28,8 @@ contract Token {
 
 
     function setBike_rec( string _mfg, string _sn) external returns(uint256 _recNum){
-        require( msg.sender == storeOwner );
-        require( (bytes(_mfg).length<=50) && (bytes(_sn).length<=50) );
+        //require( msg.sender == storeOwner );
+        //require( (bytes(_mfg).length<=50) && (bytes(_sn).length<=50) );
         uint256 recNum = nextRecNum++;
         //next line returns a pointer to the location to write to
         //it should automatically generate a new address based on the mapping
@@ -41,7 +41,7 @@ contract Token {
         nextRecNum++;
         */
         //try now with constructor
-        bikeRecAll[recNum] = bikeRec( msg.sender, _mfg, _sn );
+        //bikeRecAll[recNum] = bikeRec( msg.sender, _mfg, _sn );
         return recNum;
     }   
     

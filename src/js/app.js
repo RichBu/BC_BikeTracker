@@ -5,6 +5,10 @@ var bike_owner = [];
 var bike_mfg = [];
 var bike_sn = [];
 
+var storeOwner;  //to pre-check before sending to ether
+var bikeOwner;
+var currAddress;
+
 
 
 function addTransactionToDOM(ob, transactionsDiv){
@@ -62,13 +66,13 @@ App = {
   },
 
   initContract: function() {
-    $.getJSON('Token.json', function(data) {
+    $.getJSON('Bikes.json', function(data) {
       // Get the necessary contract artifact file and instantiate it with truffle-contract.
-      var TokenArtifact = data;
-      App.contracts.Token = TruffleContract(TokenArtifact);
+      var BikesArtifact = data;
+      App.contracts.Bikes = TruffleContract(BikesArtifact);
 
       // Set the provider for our contract.
-      App.contracts.Token.setProvider(App.web3Provider);
+      App.contracts.Bikes.setProvider(App.web3Provider);
     });
 
     return App.bindEvents();
@@ -79,12 +83,14 @@ App = {
     // $(document).on('click', '#burnTokens', App.burnTokens);
     $(document).on('click', '#transferBike', App.transferBike);
     $(document).on('click', '#grabOwner', App.displayStoreOwner);
+    $(document).on('click', '#addBike', App.addBike);
     //put in the users address
         //add your address to the page
     var infoDiv = $('#div-info');
     var pTag = $('<p>');
     var sp = $('<strong>').text('Your Address: ');
     var add = $('<span>').text(web3.eth.accounts[0]);
+    currAddress = web3.eth.accounts[0];
     console.log(pTag);
     pTag.append(sp);
     console.log(pTag);
@@ -96,19 +102,20 @@ App = {
   },
   displayStoreOwner: function(event) {
     //event.preventDefault();
-    var TokenInstance;
-    App.contracts.Token.deployed().then(function(instance) {
-        TokenInstance = instance;
+    var BikesInstance;
+    App.contracts.Bikes.deployed().then(function(instance) {
+        BikesInstance = instance;
         var promises = [];
-        promises.push(TokenInstance.storeOwner.call() );
+        promises.push(BikesInstance.storeOwner.call() );
         return Promise.all(promises);
         }).then(function(result) {
           //pull out who the owner of the bike shop is
           console.log(result[0]);
+          storeOwner = result[0];
           var infoDiv = $('#div-info');
           var pTag = $('<p>');
           var sp = $('<strong>').text('Store owner: ');
-          var add = $('<span>').text( result[0] );
+          var add = $('<span>').text( storeOwner );
           pTag.append(sp);
           pTag.append(add);
           infoDiv.append(pTag);
@@ -118,11 +125,11 @@ App = {
     //pets all of the current bikes
     event.preventDefault(); 
 
-    var TokenInstance;
-    App.contracts.Token.deployed().then(function(instance) {
-          TokenInstance = instance;
+    var BikesInstance;
+    App.contracts.Bikes.deployed().then(function(instance) {
+          BikesInstance = instance;
           var promises = [];
-          promises.push(TokenInstance.getBikesCount.call() );
+          promises.push(BikesInstance.getBikesCount.call() );
           return Promise.all(promises);
         }).then(function(result) {
           //pull out who the owner of the bike shop is
@@ -134,25 +141,26 @@ App = {
           var promises = [];
 
           for (var i = 0; i < globalNumBikes; i++) {
-              promises.push(TokenInstance.getBike_rec(i).call());
+              promises.push(BikeInstance.getBike_rec(i).call());
           }
           return Promise.all(promises);
         }).then ( function(result) {
           //all the bikes are in
-
+          console.log('');
+          debugger;
         });
   },
   getBalance: function(event){
     event.preventDefault();
 
-    var TokenInstance;
+    var BikesInstance;
 
-    App.contracts.Token.deployed().then(function(instance) {
-      TokenInstance = instance;
+    App.contracts.Bikes.deployed().then(function(instance) {
+      BikesInstance = instance;
 
       var a = address.val();
 
-      return TokenInstance.balance(a);
+      return BikesInstance.balance(a);
 
     }).then(function(result){
 
@@ -162,18 +170,54 @@ App = {
       $('#displayBalance').text(err.message);
     });
   },
+  addBike: function(event) {
+    event.preventDefault();
+    var mfg = $('#manufacturer').val();
+    var sn = $('#serial_num').val()
+    console.log(`mfg=${mfg}`);
+    console.log(`serial num=${sn}`);
+    //when adding a bike, the first owner becomes
+    //the store owner
+    $('#ownerAdd').text(storeOwner);
+
+    if ( mfg==undefined || mfg==null || mfg.trim()=="" ) {
+      //manufacturer has not been entered
+      alert('manufacturer has not been entered');
+      return
+    };
+
+    if ( sn==undefined || sn==null || sn.trim()=="" ) {
+      //manufacturer has not been entered
+      alert('serial number has not been entered');
+      return
+    };
+    
+    //everything entered ... just check if person signed in is the store owner
+    if ( currAddress !== storeOwner ) {
+      alert('Front end has detected you are not the store owner, wll still proceed to attempt to write but blockchain should block it');
+    };
+
+    var BikesInstance;
+    App.contracts.Bikes.deployed().then(function(instance) {
+          BikesInstance = instance;
+          return BikesInstance.setBike_rec( mfg, sn);
+        }).then(function(result) {
+          //write was completed
+          console.log('result from setBike_rec');
+          console.log(result);
+          console.log('write to blockchain completed');
+        });
+  },
   transferBike: function(event){
     event.preventDefault();
 
-    var TokenInstance;
+    var BikesInstance;
 
-    App.contracts.Token.deployed().then(function(instance) {
-      TokenInstance = instance;
-
-      return TokenInstance.transfer(addressToTransfer.val(), bikeNum.val());
+    App.contracts.Bikes.deployed().then(function(instance) {
+      BikesInstance = instance;
+      return BikesInstance.transfer(addressToTransfer.val(), bikeNum.val());
 
     }).then(function(result) {
-      
       addTransactionToDOM(result, $('#div-trans-log') );
       //need to break here and 
       console.log(result);

@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>My Decentralized Address Book</title>
+    <title>Bike Tracking by Rich Budek</title>
 
     <!-- Bootstrap -->
     <link rel="stylesheet" type="text/css" href="css/utility.css">
@@ -44,8 +44,8 @@
         <h2 class="bottom-margin-50">Add a new bike to blockchain</h2> 
         <div class=col-md-12" id="new-bike">
             <form>
-                <label for="owner" class="control-label">Owner Address</label>
-                <input class="width-225" id="owner" type="text">
+                <label for="owner" class="control-label">Owner Address : </label>
+                <label  id="ownerAdd" >  </label>
                 <br>
 
                 <label for="manufacturer" class="control-label">Manufacturer</label>
@@ -61,8 +61,8 @@
 
         <div class="row bottom-margin-50" id="ownership">
             <div class="col-md-4">
-                <input class="width-225" type="text" id="addressToTransfer" placeholder="put address in to transfer tokens to">
-                <button id="transferBike">Transfer Bike</button>   
+                <input class="width-225" type="text" id="bikeToTransfer" placeholder="put address in to transfer tokens to">
+                <button id="addBike">Add Bike</button>   
             </div>
         </div>
 
