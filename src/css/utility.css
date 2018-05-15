@@ -6,10 +6,29 @@
 	margin-bottom : 20px;
 }
 
+.bottom-margin-10 {
+	margin-bottom : 10px;
+}
+
 .right-margin-5 {
 	margin-right : 5px;
 }
 
 .width-225 {
 	width: 225px;
+}
+
+.thick {
+	border-color: black;
+	background-color: black;
+	border-width: 1px;
+	height: 1px;
+}
+
+.tabCol {
+	padding: 5px;
+}
+
+.tab-style {
+	margin: 20px;
 }

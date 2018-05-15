@@ -20,32 +20,26 @@
   <body>
 
     <div class="container">
-        <h1>Bike Tracking by Rich Budek</h1>
+        <h2>Bike Tracking by Rich Budek</h2>
         <br>
         <div id='general_info' >
         </div>
+        <hr class="thick"/>
 
         <div class="row bottom-margin-50">
             <div class="col-md-12" id="div-info">
-
             </div>
         </div>
 
         <!-- https://getbootstrap.com/docs/4.1/layout/grid/ -->
-        <button id="grabState">Read all bikes in inventory</button>
         <button id="grabOwner">Get Store Owner</button>
 
-        <div class="row bottom-margin-50">
-            <div class="col-md-12" id="transactions">
-
-            </div>
-        </div>
-        
-        <h2 class="bottom-margin-50">Add a new bike to blockchain</h2> 
+        <hr class="thick"/>
+        <h3 class="bottom-margin-10">Add a new bike to blockchain</h3> 
         <div class=col-md-12" id="new-bike">
             <form>
                 <label for="owner" class="control-label">Owner Address : </label>
-                <label  id="ownerAdd" >  </label>
+                <label  id="ownerAdd" > (set to store owner when transferred) </label>
                 <br>
 
                 <label for="manufacturer" class="control-label">Manufacturer</label>
@@ -54,22 +48,29 @@
 
                 <label for="serial_num" class="control-label">Serial Number</label>
                 <input id="serial_num" type="text">
+                <button id="addBike">Add Bike</button>   
             </form>
         </div>
 
-        <h2 class="bottom-margin-50">Change Ownership</h2> 
+        <hr class="thick"/>
+        <h3 class="bottom-margin-10">Bikes Stored</h3> 
+        <button id="grabState">Read all bikes in inventory</button>
+        <div class="row bottom-margin-50" id="div-bike-inven">
+        </div>
 
-        <div class="row bottom-margin-50" id="ownership">
+        <hr class="thick"/>
+        <h3 class="bottom-margin-10">Change Ownership</h3> 
+        <div class="row bottom-margin-50" id="div-ownership">
             <div class="col-md-4">
-                <input class="width-225" type="text" id="bikeToTransfer" placeholder="put address in to transfer tokens to">
-                <button id="addBike">Add Bike</button>   
+                <input class="width-225" type="text" id="addressToTransfer" placeholder="put address in to transfer bike to">
+                <button id="transferBike">Transfer Bike</button>   
             </div>
         </div>
 
+        <hr class="thick"/>
+        <h3 class="bottom-margin-10">Last Transaction</h3> 
         <div class="row bottom-margin-50" id="div-trans-log">
             <div class="col-md-4">
-                <input class="width-225" type="text" id="addressToTransfer" placeholder="put address in to transfer tokens to">
-                <button id="transferBike">Transfer Bike</button>   
             </div>
         </div>
 

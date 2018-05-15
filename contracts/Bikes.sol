@@ -28,20 +28,21 @@ contract Bikes {
 
 
     function setBike_rec( string _mfg, string _sn) external returns(uint256 _recNum){
-        //require( msg.sender == storeOwner );
-        //require( (bytes(_mfg).length<=50) && (bytes(_sn).length<=50) );
+        //having problems with require ... getting rpc error
+        require( msg.sender == storeOwner );
+        require( (bytes(_mfg).length<=50) && (bytes(_sn).length<=50) );
         uint256 recNum = nextRecNum++;
         //next line returns a pointer to the location to write to
         //it should automatically generate a new address based on the mapping
-        /* this is old way of doing
-        bikeRec newBikeRec = bikeRecAll[ recNum ];
-        newBikeRec.currOwner = msg.sender;
-        newBikeRec.mfg = _mfg;
-        newBikeRec.serialNum = _sn;
-        nextRecNum++;
-        */
+        // this is old way of doing
+        // bikeRec storage newBikeRec = bikeRecAll[ recNum ];
+        // newBikeRec.currOwner = msg.sender;
+        // newBikeRec.mfg = _mfg;
+        // newBikeRec.serialNum = _sn;
+        //nextRecNum++;
+    
         //try now with constructor
-        //bikeRecAll[recNum] = bikeRec( msg.sender, _mfg, _sn );
+        bikeRecAll[recNum] = bikeRec( msg.sender, _mfg, _sn );
         return recNum;
     }   
     

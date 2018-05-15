@@ -141,13 +141,61 @@ App = {
           var promises = [];
 
           for (var i = 0; i < globalNumBikes; i++) {
-              promises.push(BikeInstance.getBike_rec(i).call());
+              promises.push(BikesInstance.getBike_rec(i) );
           }
           return Promise.all(promises);
         }).then ( function(result) {
           //all the bikes are in
+          var divBike = $('#div-bike-inven');
+          divBike.html("");
+          var tabTag = $('<table>');
+          $(tabTag).addClass('tab-style');
+          var trTop = $('<tr>');
+          var thTag = $('<th>');
+          $(thTag).append('#');
+          $(trTop).append(thTag);
+          thTag = $('<th>');
+          $(thTag).append('Mfg');
+          $(trTop).append(thTag);
+          thTag = $('<th>');
+          $(thTag).append('S/N');
+          $(trTop).append(thTag);
+          thTag = $('<th>');
+          $(thTag).append('Owner');
+          $(trTop).append(thTag);
+          $(tabTag).append(trTop);
+
+          // debugger;
+          for (var i=0; i<result.length; i++) {
+            //loop thru and print all the bikes
+            var trTag = $('<tr>');
+            var tdTag = $('<td>');
+            $(tdTag).append( i );
+            $(tdTag).addClass('tabCol');
+            $(trTag).append( tdTag );
+            
+            tdTag = $('<td>');
+            $(tdTag).append( result[i][1] );
+            $(tdTag).addClass('tabCol');
+            $(trTag).append( tdTag );
+            
+            tdTag = $('<td>');
+            $(tdTag).append( result[i][2] );
+            $(tdTag).addClass('tabCol');
+            $(trTag).append( tdTag );
+            
+            tdTag = $('<td>');
+            $(tdTag).append( result[i][0] );
+            $(trTag).append( tdTag );
+            $(tdTag).addClass('tabCol');
+            $(tabTag).append(trTag);
+          };
+          $(divBike).append(tabTag);
+
+          console.log('bike rec=');
+          console.log(result);
           console.log('');
-          debugger;
+          //debugger;
         });
   },
   getBalance: function(event){
