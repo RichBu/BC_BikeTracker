@@ -87,21 +87,29 @@ App = {
     //put in the users address
         //add your address to the page
     var infoDiv = $('#div-info');
+    infoDiv.html('');
     var pTag = $('<p>');
     var sp = $('<strong>').text('Your Address: ');
     var add = $('<span>').text(web3.eth.accounts[0]);
     currAddress = web3.eth.accounts[0];
-    console.log(pTag);
     pTag.append(sp);
-    console.log(pTag);
     pTag.append(add);
     infoDiv.append(pTag);
-    console.log(infoDiv);
     console.log('posted address');
     //return App.displayStoreOwner();
   },
   displayStoreOwner: function(event) {
     //event.preventDefault();
+    var infoDiv = $('#div-info');
+    infoDiv.html('');
+    var pTag = $('<p>');
+    var sp = $('<strong>').text('Your Address: ');
+    var add = $('<span>').text(web3.eth.accounts[0]);
+    currAddress = web3.eth.accounts[0];
+    pTag.append(sp);
+    pTag.append(add);
+    infoDiv.append(pTag);
+
     var BikesInstance;
     App.contracts.Bikes.deployed().then(function(instance) {
         BikesInstance = instance;
@@ -153,14 +161,21 @@ App = {
           var trTop = $('<tr>');
           var thTag = $('<th>');
           $(thTag).append('#');
+          $(thTag).addClass('tabCol');
           $(trTop).append(thTag);
+
           thTag = $('<th>');
+          $(thTag).addClass('tabCol');
           $(thTag).append('Mfg');
           $(trTop).append(thTag);
+
           thTag = $('<th>');
+          $(thTag).addClass('tabCol');
           $(thTag).append('S/N');
           $(trTop).append(thTag);
+
           thTag = $('<th>');
+          $(thTag).addClass('tabCol');
           $(thTag).append('Owner');
           $(trTop).append(thTag);
           $(tabTag).append(trTop);
@@ -192,9 +207,9 @@ App = {
           };
           $(divBike).append(tabTag);
 
-          console.log('bike rec=');
-          console.log(result);
-          console.log('');
+          // console.log('bike rec=');
+          // console.log(result);
+          // console.log('');
           //debugger;
         });
   },
@@ -254,22 +269,31 @@ App = {
           console.log('result from setBike_rec');
           console.log(result);
           console.log('write to blockchain completed');
+        }).catch( function(result) {
+          //an error occurred
+          var alertStr = "Bike not stored -- an error occured : ";
+          alertStr += result;
+          alert(alertStr);
         });
   },
   transferBike: function(event){
     event.preventDefault();
 
+    var tempStr = $('#addressToTransfer').val();
+    var addressToTransfer = tempStr.trim();
+    var bikeNum = parseInt($('#bikeToTransfer').val());
     var BikesInstance;
-
+    console.log(`address=/${addressToTransfer}/`);
+    console.log(`bike number=/${bikeNum}/`);
     App.contracts.Bikes.deployed().then(function(instance) {
       BikesInstance = instance;
-      return BikesInstance.transfer(addressToTransfer.val(), bikeNum.val());
+      return BikesInstance.transfer(addressToTransfer, bikeNum);
 
     }).then(function(result) {
-      addTransactionToDOM(result, $('#div-trans-log') );
+      //addTransactionToDOM(result, $('#div-trans-log') );
       //need to break here and 
       console.log(result);
-      debugger;
+      //debugger;
       var pTag = $('<p>');
       pTag.append('bike transferred');
       $('#div-trans-log').append(pTag);

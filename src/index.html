@@ -22,17 +22,15 @@
     <div class="container">
         <h2>Bike Tracking by Rich Budek</h2>
         <br>
-        <div id='general_info' >
-        </div>
         <hr class="thick"/>
 
-        <div class="row bottom-margin-50">
+        <div class="row bottom-margin-10">
             <div class="col-md-12" id="div-info">
             </div>
         </div>
 
         <!-- https://getbootstrap.com/docs/4.1/layout/grid/ -->
-        <button id="grabOwner">Get Store Owner</button>
+        <button id="grabOwner">Refresh Addresses</button>
 
         <hr class="thick"/>
         <h3 class="bottom-margin-10">Add a new bike to blockchain</h3> 
@@ -62,7 +60,11 @@
         <h3 class="bottom-margin-10">Change Ownership</h3> 
         <div class="row bottom-margin-50" id="div-ownership">
             <div class="col-md-4">
+                <input class="" type="text" id="bikeToTransfer" placeholder="record #">
+                <br />
                 <input class="width-225" type="text" id="addressToTransfer" placeholder="put address in to transfer bike to">
+                <br />
+                <br />
                 <button id="transferBike">Transfer Bike</button>   
             </div>
         </div>
